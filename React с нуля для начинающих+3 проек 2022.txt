@@ -1,0 +1,905 @@
+_ 4 Udemy  React с нуля для начинающих. +3 проекта в портфолио! (2022)
+006 Варианты окружения
+----------------------------------------------------------------------
+альтернатива из React + NodeJS. Fullstack приложение за 3 часа
+новый прект вэбшторм
+npm init и затем базовые вопросы
+имя,версия, дескрипт, поинт глав файл app.js пропущу 5 раза ОК
+05:20 получили packge.json
+создал app.js
+npm install express mongoose
+
+-----------------------------------------------------------------------
+альтернатива
+Сборка проекта с ParcelJS. Собираем базовое React-приложение
+https://www.youtube.com/watch?v=fdf5KS_XCoc
+
+----------------------------------------------------------------------
+04:00
+создали папку
+вин термина cmd
+cd перешли в каталог
+выполнили
+npx create-react-app papka    в какую папку установить 
+npx create-react-app .        в текущую
+открыли  шторм и проект в этой папке
+теминал , 
+запустим сервер npm start
+открылся шаблон реакта
+
+   02 - React с JSX и без
+==========================================================================================
+созадим в каталоге index.html
+подключим из https://ru.reactjs.org/docs/cdn-links.html
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+создаем фу-ю 
+<script>   const App = () => {
+      return React.createElement("h1", {id: 'hello', className: 'class1' },
+          'текст про тэг h1') ...
+теперь нужно найти ноду и к ней отправить наше первок реакт приложение
+нужна вторая биб-ка  ReactDOM.render()
+ ReactDOM.render(React.createElement(App), document.getElementById( 'root'))
+добавим еще приложение "Книга" содерж три поля: название , год выпуска , цену
+   const Book = (props) =>{
+        return React.createElement("div", {id: 'hello', className: 'class1' },
+ [ React.createElement("h2", {}, "Kniga pro JS"),
+   React.createElement("p", {}, 2010),
+     React.createElement("p", {}, "900 grn")
+ ]) }
+переделываю основу
+  const App = () => {
+      return React.createElement("div", {}, [перечисляю элементы...  , React.createElement(Book),
+     React.createElement(Book),
+          React.createElement(Book),
+   ])  }         
+Как сделать чтобы книга добавлялась сдинмически меняющ данными?
+  вместо   React.createElement(Book),
+добавим 
+     React.createElement(Book, {name: 'pervaaa', year: 2018, price: 100 }),
+          React.createElement(Book, {name: 'dfsd', year: 2014, price: 122 }),
+при передачи данных используем пропс props
+    const Book = (props) =>{
+ return React.createElement("div", {id: 'hello', className: 'class1' },
+ [  React.createElement("h2", {}, props.name),
+     React.createElement("p", {}, props.year),
+     React.createElement("p", {}, props.price)
+
+-- 003 --
+==================================================================================
+ Преобразование приложения в JSX
+--- public/index.html настраивается через package.json
+ "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+-----src/index.js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+импорт пакетов нужных подключаються
+Итак скопируем наше приложение index.html и вставим в src/index.js
+было
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+//import App from './App';
+..........
+сюда вставляем от const Book = (props) =>{...  и 
+до
+... React.createElement(Book, {name: 'aass', year: 2013, price: 10 }),
+    ])
+}
+...........
+const container = document.getElementById('root');
+const root = ReactDOM.createRoot(container);
+root.render(<App />);
+
+-- 004 --
+============================================================================
+ Разбор задания по преобразованию компонента в JSX
+----------src/index.js
+из структуры
+    return React.createElement("div", {id: 'hello', className: 'class1' },
+        [
+            React.createElement("h2", {}, props.name),
+            React.createElement("p", {}, props.year),
+            React.createElement("p", {}, props.price)
+        ])
+получить приложение используя JSX
+ return <div> <h2>props.name</h2>  </div> не правильно
+используем фигурные скобки
+  return <div>
+      <h2>{props.name}</h2>
+      <p>{props.year}</p>
+      <p>{props.price}</p>
+       </div>
+
+---- 5 -------
+==============================================================================
+ Особенности JSX
+JSX шаблонизатор использует фигурные скобки
+выражение - вернет результат: {чтот-то ? <span>{что-то ...}</span> : "тогда это"}
+атрибуты  className htmlFOR   через тире  aria-hidden  ariaHidden
+дата атрибуты data-text=""
+ { //хочу закоментировать только в добавление скобок <p>{props.year}</p>}
+< br  />
+--------src/index.js
+//описание компонента Book
+  const Book = (props) =>{...
+<h2>{props.name}</h2>
+      <p>{props.year}</p>
+      <p>{props.price}</p>
+      <p>{props.children}</p> //принят дочерний эл-т
+       </div>....
+// основной компонент приложения
+const App = () => {...
+// дальше вставлен компонент Book
+   <Book name='pervaaa'  year = '2018'  price = "133" >
+  dobavil text  //передано как дочерний элемент
+  </Book>
+
+-- 6 ----
+==================================================================================
+         Разделение приложения на модули
+index-do002-06.js -сохранил
+разделим наш проэкт на разные составляющие
+---- Book.jsx
+вставляем компонент вырезая из index.js
+экспортируем export { Book }
+----- index.js -> index.jsx
+ import App from './App';
+вырезаем const App =... и переносим в
+------ App.jsx  здесь будет сборка всех компонентов
+import {Book} from "./Book";
+import React from "react";
+const App = () => {   return (<div>
+        <Book name='pervaaa' year='2018' price="133">
+          dobavil text
+        </Book>
+        <Book name='phgkgjghh' year='2010' price="156"/>
+        <Book name='pffsgs' year='2015' price="500"/>
+      </div>   ) }
+export default App;
+-----  index.jsx теперь
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+          import App from './App'; //это основной 
+const container = document.getElementById('root');
+const root = ReactDOM.createRoot(container);
+root.render(<App />);
+
+------- 7 -----
+=====================================================================================
+   Условная отрисовка
+---- Book.jsx
+<h2>Привет, {props.name ? <span>{props.name}</span> : " вывод если пусто " }</h2>
+или
+const Book = (props) =>{
+    if (!props.name ) { ненадо отрисовывать с пустым полем name
+        return null //ничего не возращает
+    }
+либо тернарный оператор
+return  props.name ? (<div> ... </div>  ) : null
+
+ --- 8 ----
+===================================================================================
+   Пример с прелоадером
+----- Preloder.jsx
+import React from "react";
+const Preloader  = () => { return <h3>Идет загрузка...</h3> }
+export { Preloader }
+------ index.js
+добавим проп   const isLoading = false 
+root.render(<App  isLoading = {isLoading}    />);
+-------- App.jsx и на уровне приложения
+import { Preloader } from "./Preloader"
+   const App = (props) => {
+  return props.isLoading ? ( <Preloader /> ) :
+      ( <div>...
+когда  const isLoading = true надпись Идет загрузка
+        const isLoading = false  сам компонент App 
+
+ЧАСТЬ 03 - Классовые React-компоненты
+-- 1--
+=================================================================================
+      Разбор составляющих базового React-шаблона
+nepomnyasci-react-do03-002.zip
+-- 2--  
+=================================================================================
+      Понятие React-компонента
+------ src/App.jsx
+классовый компонент минимум
+import React from "react";
+class App extends React.Component {
+  constructor(props) { //минимум конструктор - оционально
+    super(props);
+}
+  render()     {// рендерит
+                  return (
+                     <div className="App">
+                Hello class React
+            </div>   )     }
+}   export default App;
+
+----  3 ---
+======================================================================================
+          Состояние компонента и управление им
+------ src/App.jsx
+state
+ this.state = {count: 0}  // состояние - объект и добавлю в него поле count: 0 
+добавлю кнопочку с состоянием count
+    <button>{this.state.count}</button>
+нужно научиться обновлять это состояние- напишем фун-ю
+  <button onClick={this.handleClick}>{this.state.count}</button>
+// мы не можем обновлять объект состояния такой ф-ей
+    // тк  обновляется сама ссыка, а нам нужен новый
+  //  объект состояния, чтоб было понятно что он изменился
+handleClick = () => { this.state.count++ }
+добавляем ключ к состоянию   
+  constructor(props) {
+       super(props); 
+  this.state = {
+        count: 0,  //поле
+        someKey: false // ключ
+     }  // состояние - объект
+...
+и тогда               1- метод в стрелочную функцию!
+handleClick = () => {  
+ // новое состояние= возьми старое состоя-е добавь единичку  
+  this.setState({count: this.state.count + 1 })
+  }
+2й вариант ( 1й вариант  был с конструктором)
+//1й варинт  constructor(props) {
+//1й варинт    super(props);
+//1й варинт    this.state = {
+//1й варинт        count: 0  //поле
+//1й варинт       // someKey: false // ключ
+//1й варинт   }  // состояние - объект
+// 2й вариант
+     state = { count: 0 } // все также работает
+handleClick = () => {
+   // this.state.count++
+ // новое состояние= возьми старое состоя-е добавь единичку
+  this.setState({count: this.state.count + 1 })
+ //если состояние должно быть гарантировано предыдущим( бывают
+    //разные нюансы и тем более с исинхронными запросами)
+    //мы можем передать ф-ю  а не объект
+    this.setState((aa) => ({count: aa.count + 1 }))
+    this.setState((prevState) => ({count: prevState.count + 1 }))
+  }
+
+ --- 4 -----
+=============================================================================
+      Нюансы создания методов в классовых компонентах
+клик будет функцией, а не срелочной ф-ей
+для этого в конструктор впишем
+    constructor() {   super()
+        this.state = {  count: 0 }
+ //метод равен самому себе но при этом используем привязку контекста this
+   this.handleClickk = this.handleClickk.bind(this)
+}
+и теперь
+   handleClickk() {  2 - бандинг на уровне конструктора!!
+  // как ф-я   не понимает this, возвратим конструктор
+// и после  this будет равен моему контексту, который везде использую
+        this.setState({count: this.state.count + 1 })
+    }
+и
+   3 - анонимная ф-я!!! 
+                <br />
+      <button onClick={ () => this.setState({count: this.state.count +1}) }>{this.state.count}</button>третий вариант
+
+--- 5 ---
+============================================================================
+     Разбор практики с кликером
+App-do-03-005.jsx
+----- App.jsx
+        <div className="App" style={{margin: 'auto', width: '300px'}}>
+                <button onClick={this.decrement}>-</button>
+               <span style={{margin: '0 0.6rem', display: 'inline-block'}}>{this.state.count}</span>
+                <button onClick={this.increment}>+</button>
+
+            </div>
+
+  --- 6 -----
+================================================================================
+ Понятие жизненного цикла React-компонента
+монтирование - состояние когда первый раз что-то отрисовывает через рендер
+----- App.jsx 
+   componentDidMount() {
+        console.log( 'единожды компонент смонтировался')
+     // fetch() можно асинхронно запросить данные с сервреа
+        //подключать плагины (н. отслеживать скроллы)
+    }
+    componentDidUpdate() { console.log( 'компонент обновися') }
+    componentWillUnmount() { console.log( 'компонент обновися') }
+теперь получим посты
+    componentDidMount() {
+     fetch( 'https://jsonplaceholder.typicode.com/posts')
+         .then(console.log)
+получу объект  bodt:ReadableStream   без данных  и воспользуюсь json
+   .then(response => response.json())
+         .then(data => this.setState({posts: data})) обновить свои посты
+
+    --- 7 --- 8 ---
+=================================================================================
+  Разбор практики по созданию таймера
+    componentDidMount() {
+       const userCount = localStorage.getItem( 'mytimer')
+        if (userCount) {
+          this.setState({count: +userCount})
+        }
+            }
+    componentDidUpdate() {
+       localStorage.setItem('mytimer', this.state.count )
+    }
+   componentWillUnmount() {
+       clearInterval(this.couterId)
+   }
+...
+
+----- 9 -----
+==================================================================================
+   Работа с коллекциями и атрибутом key
+    state = {
+        posts: [
+            {id:  'abc1', name: 'JS Basics'},
+....
+{this.state.posts.map(post =>(
+          <h3 key={post.id}>{post.name}</h3>
+           ))}
+ ----- 10 -----
+=====================================================================================
+ Однонаправленный поток данных и состояния
+----Post.jsx
+export  function Post (props) {
+    return <h2>{props.name}</h2>
+}
+----Posts.jsx
+import {Post} from "./Post";
+export  function Posts (props) {
+    return <div> {
+ props.posts.map( post => (<Post key={post.id} name={post.name} /> ))
+                 }   </div>
+}
+------App.jsx
+import {Posts} from  './components/Posts'
+теперь добавим
+//абстракт ф-я управлять чем нибудь
+    handleSomething = () => { //this.setState({}) console.log( 'setstate upd') }
+//ф-ю добавим во все посты 
+<div...
+ <Posts posts={this.state.posts} cb={this.handleSomething} />
+...
+----Posts.jsx
+...<Post key={post.id} name={post.name} cb={props.cb}/> 
+...
+----------Post.js
+export  function Post (props) {
+    return <h2 onClick={props.cb}>{props.name}</h2>
+} вызвали ф-ю созданная на уровне App.jsx, т.е. можна влиять на state , который
+ есть на уровне приложения
+ Коснемся темы дестриктуризации
+------App.jsx
+  const {posts} = this.state; //сделаем деструктуризацию
+         <Posts
+               // posts={this.state.posts} деструктуризация
+                posts={posts}
+              cb={this.handleSomething}
+              />
+ ----Post.jsx
+export  function Post (props) {
+//деструктуризация проксов
+   const {name, cb} = props
+    return
+  <h2 onClick={cb}> {name} </h2>   // <h2 onClick={props.cb}>{props.name}</h2>
+}
+
+--- 11 --- 12 -----------
+================================================================================
+  Задание на обновление состояния через дочерние компоненты что надо сделать
+  Разбор практики по обновлению состояния через дочерние компоненты
+------App.jsx
+ создадим фун-ю те метод класса
+    //удаление поста
+  removePost = (id) => {
+  this.setState({posts: this.state.posts.filter(post => post.id !== id)})
+  }
+...
+ <Posts posts={posts} removePost={this.removePost} />
+...
+----Posts.jsx
+ return <div> {   
+         props.posts.map( post => (
+         <Post
+               key={post.id}
+                id={post.id}
+                 name={post.name}
+                       removePost={props.removePost}
+                     />
+                   ))
+----Post.jsx
+export  function Post (props) {  
+  const {id, name, removePost} = props
+    return   <h2> {name}
+      <button
+       onClick={() => removePost(id)}>
+        delete</button>  </h2>
+}
+
+--- 13 -----
+==============================================================================
+  Отличие классовых компонентов от функциональных в классическом понимании
+------App.jsx
+классовый компонент
+
+----Posts.jsx
+классический функциональный компонент когда не нужно работать не со state , не
+с жизненным циклом . Благодря хукам.
+
+Часть 3
+    Работа с формами в React
+--- 1 ----
+====================================================================================
+   Управляемые компоненты - принцип единой ответственности
+------App.jsx
+import {Form} from  './components/Form'
+function App()  {
+   return ( <div className="App"> <Form />  </div> )
+}
+export default App;
+-----------Form.jsx
+import React from "react";
+class From extends React.Component{
+     render() { return <div> <input type="text"/> /div> }
+}  export {From}
+изменяем инпут , изменяем в state
+поэтому созадим state и обработчик 
+ handleChange = (event) => { this.setState({firstName: event.target.value}) }
+ <input type="text" ... onChange={this.handleChange} ....
+    //деструктуризация
+    const {firstName, email} = this.state
+   handleChange = (event) => {
+ // this.setState({firstName: event.target.value})
+ this.setState({[event.target.name]: event.target.value})
+   }
+--- 2 ------
+===================================================================================
+ Валидация значений формы
+----- Form.jsx
+   validateName = () => {
+       if ( this.state.firstName.length < 5) {
+          alert( 'не меньше п\'яти символов')
+       }
+   }
+       <input type="email"...
+                   onChange={this.handleChange}
+                   onBlur={this.validateName} при потере фокуса
+            />
+--- 3 ---------
+===============================================================================
+ Элементы checkbox, radio button, select, textarea
+//создадим
+   state = {
+     firstName: '',
+       email: '',
+       message:  '',
+       select: ''
+   }
+  const {firstName, email, message, select} = this.state
+<br />
+            <textarea name="message" value={message}
+                      onChange={this.handleChange}
+             />
+            <br />
+    <select name="select" value = {select} onChange={this.handleChange}>
+        <option value="" disabled></option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+    </select>
+чекбокс
+  <input type="checkbox" name= "subscription" checked={subscription}  
+onChange={this.handleCheckboxChange} />
+  state = {...  select: '', subscription: false
+    render() {  //деструктуризация
+    const {..., select, subscription} = this.state
+    handleCheckboxChange = (event) => {
+        this.setState({[event.target.name]: event.target.checked})
+    }
+          <label>
+            радиокнопки
+            <input type="radio" name="gender" value="male"
+ onChange={this.handleChange}  checked={gender === "male"}   /> Male
+            <input type="radio" name="gender" value="female"
+                   onChange={this.handleChange}
+             checked={gender === "female"} /> Female
+        </label>
+   state = {... subscription: false, ssubscription: false,  gender:  ''}
+...
+
+------ 4 -- 5 --
+=======================================================================
+ Задание на создание формы подписки что надо сделать 
+Решение практики по созданию формы подписки
+---------- SubscriptioForm.jsx 
+ handleSubmit = () => {
+    //валидность
+   const isValidEmail =  /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+            .test(this.state.email)
+    const isValidCheckbox = this.state.isAgreeWithTerms
+ if (!isValidEmail) {
+              alert("You have entered an invalid email address!")
+         return     }
+  if (!isValidCheckbox) {
+                  alert("You should accept all terms nd conditions")
+      return   }
+  this.setState({ email:  ' ', isAgreeWithTerms: false })
+            alert( 'Thank you for subscript')
+    }
+
+--- 6 --------
+===========================================================================
+ Использование рефов и управление фокусом
+--------- FormWithRef.jsx
+ref- объект указатель на определенную ноду, пригодиться для работы с фокусом
+class FormWithRef extends React.Component {
+constructor() {     super();
+    this.state = {  card:  '',  email:  '',  }
+    this.firstNameRef = React.createRef()
+    this.emailRef = React.createRef()
+}
+//принимает ф-ию и вторым параметром принимает колбэк
+    handleChange = (e) => {
+        this.setState(() => (
+  {[e.target.name]: e.target.value}),  () => {
+// карточка обновилась и делаем проверку на символы
+ if (this.state.card.length === 16 ) {this.emailRef.current.focus() }
+  })         }
+  <input type="text" ....
+onChange={this.handleChange}
+   ref={this.firstNameRef}  />
+
+----- 7 -------------
+============================================================================
+ Неуправляемые компоненты
+---------- UncontrolledForm.jsx
+На каждое поле нужно создать ref
+не вешаем чендж , велью. делаем обработчик на кнопочку либо на форму
+    constructor() {
+        super();
+             this.cardRef = React.createRef()
+             this.emailRef = React.createRef()
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault()
+   if (this.cardRef.current.value.length < 16){
+     alert( 'invalid card number' )
+...
+ref ы  живут в доме , где мы считывем значения
+
+ЧАСТЬ 5
+проект фильмы
+================================================================================
+--1--
+          -------------APP---------------
+         |              |               |
+       Header         Main            Footer
+                        |
+     |------------------|---------------------|
+    Serch             Movies              Preloader
+                        |
+                       Movie
+--2---
+=================================================================================
+002 Подготовка проекта, создание шапки и подвала
+==05nepomnyasci-react
+npx create-react-app .
+Materialize
+https://materializecss.com/about.html
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+---layout/Header.jsx
+функциональный компонент
+------App.js
+  return (
+      <StrictMode>
+      <React.Fragment> заменить на <>
+     <Header />
+   </React.Fragment>  заменить на </>
+      </StrictMode>
+  )
+layout /   Footer.jsx  Header.jsx
+--------- Main.jsx
+------src/index.css
+.content {  min-height: calc(100vh - 70px - 64px);   padding: 1.5rem 0;}
+----------App.js
+import React from "react";
+import { StrictMode } from 'react'
+import {Header} from  './layout/Header'
+import {Footer} from  './layout/Footer'
+import {Main} from  './layout/Main'
+
+function App()  {
+  return (
+      <StrictMode>
+      <React.Fragment>
+     <Header />
+          <Main />
+   <Footer />
+    </React.Fragment>
+      </StrictMode>
+  )
+}
+export default App;
+Заготовка готова
+
+--- 3-----
+===========================================================================
+  Знакомство с API базой фильмов
+будем использовать сервис https://www.omdbapi.com/ - открытая бд о кино
+Нужно получить уникальный ключ (почта alelolxolx@gmail.com)
+Here is your key: 649b0731
+Please append it to all of your API requests,
+OMDb API: http://www.omdbapi.com/?i=tt3896198&apikey=649b0731
+Click the following URL to activate your key: http://www.omdbapi.com/apikey.aspx?VERIFYKEY=665d8cd9-0e3a-4e5e-a983-af71c86802f9
+If you did not make this request, please disregard this email.
+
+---- 4 -------------
+=============================================================================
+   Задание на создание общего списка фильмов
+через фечь запросим данные и стэйт заполним массивом пришедших данных
+один компонент отвечает за список и компонент за карточку с фильмом
+
+-------- 5 ------------------
+============================================================================
+  Решение практики по созданию общего списка фильмов
+----- Movie.jsx      function Movie (props) { }  export {Movie}
+----- Movies.jsx      function Movies (props) { }  export {Movies}
+----- Movie.jsx 
+function Movie (props) {
+    const { просто переименуем с мален буквы 
+ Title: title,    Year: year,  imdbID: id,  Type: type, Poster: poster,} = props;
+вставили return <div ... разметка
+ src="images/office.jpg"> на  src={poster} />  
+">Card Title< на   >{title}</span>
+----- Movies.jsx ожидает массив фильмов 
+    const { movies = [] } = props;
+    return (
+        <div className='movies'>
+            {movies.length ? ( проойдемся по массиву
+          movies.map((movie) => < вызываем компонент
+Movie key={movie.imdbID} {...movie} />) ключь  и спрэд оператор объект movie 
+            ) : (
+                <h4>Nothing found</h4>
+            )}
+        </div>
+    );
+------- Main.jsx
+import React from "react"; import {Movies} from  '../components/Movies'
+class Main extends React.Component {
+  state = {  movies: []  }
+   render() {
+     return (
+        <main className = 'container content'>
+           <Movies  movies={this.state.movies} />
+         </main>
+           )  } }   export {Main}
+ //смонтировался компонент и запрос данных
+ componentDidMount() {
+   fetch(  'http://www.omdbapi.com/?apikey=649b0731c&s=matrix')
+// прийдет ответ и преобразуем через джейсон
+       .then(response => response.json() )
+// а пото данные которые показала программа потсмен
+нужно в movies положить то что лежит в дата с ключом поиск
+       .then(data => this.setState({movies: data.Search}))
+  }
+
+---  6 ---
+===============================================================================
+ Добавление строки поиска
+--------Preloader.jsx
+function  Preloader() {
+    <div className="progress">  <div className="indeterminate"></div>
+   </div>      }
+export {Preloader}
+--------- Search.jsx  форма писка
+будет иметь состояние, то что ввел пользователь и чекбоксы
+классовый компонент
+import React from "react";
+class Search extends React.Component {
+    render() { return ( форма вывда ) }   }       export {Search}  02:49
+ изминения <input id=...  />  <div className=...
+    state = { search:  '',   } 
+делаем управляемый компонент value={this.state.search}
+onChange - чтоб мы могли state обновлять
+   onChange={(e) => this.setState({search: e.target.value})}
+------- Main.jsx
+     <Search />
+
+---- 7  ---
+================================================================================
+   Решение практики по реализации поиска фильмов
+нужна ф-я которую можно спустить вниз и которая обновляла нам state
+и будет принимать поисковую строку
+------- Main.jsx
+  // поисковая ф-я      searchMovies = (str) => {   }
+  // поисковая ф-я  
+searchMovies = (str) => {
+ fetch(  `http://www.omdbapi.com/?apikey=649b0731&s=${str}`)
+            .then(response => response.json() )
+            .then(data => this.setState({movies: data.Search}))
+    }
+и ниже в компонент   <Search  searchMovies={this.searchMovies} />
+----- Search.jsx
+строка передана через пропс
+     handleKey = (e) => {
+  если нажата интэр то срабат через пропс метод поиска
+   if (e.key === 'Enter') { this.props.searchMovies(this.state.search) }
+    }
+в инпуте
+запись в стэйт текущего значения инпута
+  <input .... onChange={(e) =>this.setState({search: e.target.value})}
+     onKeyDown={this.handleKey} срабатывает метод
+  />
+добавим кнопочку
+<button className="btn search-btn" 
+         onClick={() => this.props.searchMovies(this.state.search)}>Search</button>
+------ index.css
+.search-btn {
+  position: absolute;
+  top: 0;
+  right: 0.5rem;
+}
+
+---- 8 --- 9 --
+==============================================================================
+     Задание на добавление фильтрации по категории что надо сделать
+    Решении практики по добавлению фильтрации по категориям
+----- Search.jsx 
+  <label>
+     <input className="with-gap" name="type" type="radio" />
+     <span>All</span>
+   </label>
+---------- index.css
+label:not(:last-child) {
+  margin-right: 1rem;
+} 
+----- Search.jsx
+в state обавим type:  'all' по умолчанию
+
+три радиокнопки
+  checked = { this.state.type === 'all' или movie или series } />
+
+        <label>
+                <input className="with-gap" name="type" type="radio"
+                       data-type="all" дата-аттрибут
+                       onChange = {this.handleFilter} Навесим обработчик на кнопки 
+                       checked = { this.state.type === 'all'} поле чекед
+                        />
+                <span>All</span>
+            </label>
+ ф-я получает type
+   handleFilter = (e) => { this.setState({type: e.target.dataset.type}) }
+варианты тайпов 'all' или movie или series  через дата аттрибуты  data-type="all"...
+Когда призойдет изменение то через ф-ю состояния setState назначу выбранное
+{type: e.target.dataset.type} Навесим обработчик на кнопки 
+Теперь управление полем чекед - сравниваем текущий state 
+-------- Main.jsx
+Обновим ф-ю отвечающую за поиск фильмов   searchMovies = (str, type =  'all')
+ fetch(  `http://www.omdbapi.com/?apikey=649b0731&s=${str}${
+     type !== 'all' ? `&type=${type}` : ''}`  )
+----- Search.jsx
+эту ф-ю нужно вызвать, когда меняем значение,при этом когда обновился ключь type
+вторым параметром добавляем колбэк
+    handleFilter = (e) => {  this.setState(() => ({type: e.target.dataset.type}),
+  () => {this.props.searchMovies(this.state.search,  this.state.type)  })    }
+где жмем на кнопку тоже изменяем
+
+----- 10 ----------------
+==============================================================
+   Обработка неудачного поиска
+-------- Main.jsx
+  state = {       movies: [],                     loading: true    }
+когда данные загрузили
+.then(data => this.setState({movies: data.Search, loading: false}))
+
+---- 11--
+==========================================
+011 Безопасное хранение ключа API
+-------.evv.local
+REACT_APP_API_KEY=649b0731
+-----Main.jsx
+const API_KEY = process.env
+
+-----12-----------
+==========================================
+ Сборка приложения и выгрузка на продакшн
+git add -A   добавит все наши изменения в текущий статус
+git commit -m "projekt test ttt"  зафиксируем наши поление изменения 
+свяжем с гитхабом
+new 
+Repository name   05nepomnyasci-react
+Create repository и подсказка , нужна строка
+git remote add origin https://github.com/vav67/05nepomnyasci-react.git
+происходит объединение локального репозитория с удаленным
+git push -u origin master
+объединили ветки локаль и удаленку
+обновив увидим наш проект
+секрет 
+зайдем настройки Secrets  new repository secret
+REACT_APP_API_KEY     649b0731
+Add secret
+это зависимость для разработки и мы не хотим чтобы она у нас в итоговый проект 
+собиралась поэтому ключ --save-dev
+npm install gh-pages --save-dev
+---------- package.json
+появилось секция
+"devDependencies": {  "gh-pages": "^4.0.0"   }
+и в скрипте   "scripts": {...
+     "build": "react-scripts build", "predeploy": "npm run build",...,
+                  "deploy": "gh-pages -d build" укажем на какую ветку загружать в
+гитхабе (build собирается в папку "build" то мы ее и будем отправлять на
+соответствующую ветку, также команда  "predeploy": "npm run build", удобно 
+запускать ( хитро сделано (приставка pre): запуск 'deploy' и 
+затем автомат 'predeploy' )
+Поэтому когда запустим npm run deploy то запуститься "predeploy" а затем 'deploy'
+- что сформирует папку build и отправит на гитхаб страницу
+Теперь у нашего проекта планируется официалиный сайт, будет лежать на гитхабе
+"homepage": "https://vav67.github.io/05nepomnyasci-react",
+---------- package.json
+{
+  "name": "05nepomnyasci-react",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "https://vav67.github.io/05nepomnyasci-react",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
