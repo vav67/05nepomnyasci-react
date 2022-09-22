@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/05nepomnyasci-react/static/css/main.342c0f01.css",
+    "main.js": "/05nepomnyasci-react/static/js/main.722480b3.js",
+    "index.html": "/05nepomnyasci-react/index.html",
+    "main.342c0f01.css.map": "/05nepomnyasci-react/static/css/main.342c0f01.css.map",
+    "main.722480b3.js.map": "/05nepomnyasci-react/static/js/main.722480b3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.342c0f01.css",
+    "static/js/main.722480b3.js"
+  ]
+}
